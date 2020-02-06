@@ -7,3 +7,5 @@ This is the GitHub repository for the following paper currently under review:
 This paper is based on the following "blue paper" commissioned by the [High Level Panel for a Sustainable Ocean Economy](www.oceanpanel.org):
 
 * Gaines SD, Cabral RB, Free CM, Golbuu Y, et al. (2019) The expected impacts of climate change on the ocean economy. World Resources Institute. Available online [here](https://www.oceanpanel.org/expected-impacts-climate-change-ocean-economy).
+
+This README page will be updated to describe the repository contents shortly. Thank you for your patience.
