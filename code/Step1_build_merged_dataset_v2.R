@@ -125,8 +125,8 @@ g <- ggplot(scalar_sf) +
 g
 
 # Export
-ggsave(g, filename=file.path(dir_plots, "figure_proportion_of_fao_catch_in_free_etal.png"), 
-       width=6.5, height=4, units="in", dpi=600)
+# ggsave(g, filename=file.path(dir_plots, "figure_proportion_of_fao_catch_in_free_etal.png"), 
+#        width=6.5, height=4, units="in", dpi=600)
 
 
 # Format capture data
@@ -160,8 +160,10 @@ wc <- wc_orig %>%
          value_usd_diff_scaled=value_usd_diff*scalar_use)
   
 # Inspect
-freeR::complete(wc)
+# freeR::complete(wc)
   
+# Export WC for stupidly circular need-based reform scenario
+saveRDS(wc, "data/fisheries/gaines_scaled_climate_impact.Rds")
 
 
 # Step 3. Format mariculture data
@@ -201,9 +203,9 @@ faq_cntry_key <- faq_orig %>%
 faq <- faq_orig %>% 
   # Add "country use"
   filter(eez_type=="200NM") %>% 
-  left_join(select(faq_cntry_key, eez_name, ter1_name_use, ter1_iso_use), by="eez_name") %>% 
+  left_join(select(faq_cntry_key, eez_name, ter1_iso_use), by="eez_name") %>% 
   # Sum production and profits by TER1 USE
-  group_by(feed_scen, dev_pattern, rcp, year, ter1_name_use, ter1_iso_use) %>% 
+  group_by(feed_scen, dev_pattern, rcp, year, ter1_iso_use) %>% 
   summarize(value_usd_2100=sum(profits_usd, na.rm=T),
             production_mt_2100=sum(prod_mt, na.rm=T)) %>% 
   # Reduce to scenarios of interest
@@ -377,6 +379,24 @@ table(data$rcp, data$need_prod_type)
 
 n_distinct(data$iso3)
 
+# NUmber of countries with tourism
+stats <- data %>% 
+  group_by(rcp) %>% 
+  summarize(ntourism=sum(tour_value_usd_change==0),
+            n_notourism=sum(tour_value_usd_change!=0))
+
+# With tourism
+data %>% 
+  filter(tour_value_usd_change!=0) %>% 
+  group_by(rcp) %>% 
+  summarize(n_offset=sum(reform_value_type=="Net offsetter"))
+
+# With tourism
+data %>% 
+  filter(tour_value_usd_change==0) %>% 
+  group_by(rcp) %>% 
+  summarize(n_offset=sum(reform_value_type=="Net offsetter"))
+
 
 # Plot profit type
 #########################
@@ -398,7 +418,8 @@ data_plot <- data %>%
                                                         "Progressive reforms",
                                                         "Need-based progressive reforms"))) %>% 
   mutate(value_type=recode(value_type, "Net winner"="All gains", "Net offsetter"="Net offsets", "Net loser"="Net losses"), 
-         value_type=factor(value_type, levels=c("Net losses", "Net offsets", "All gains")))
+         value_type=factor(value_type, levels=c("Net losses", "Net offsets", "All gains"))) %>% 
+  filter(scenario %in% c("Business-as-usual", "Progressive reforms"))
 
 # Add results to world
 data_sf <- world %>% 
@@ -427,7 +448,7 @@ g1
 
 # Export figure
 ggsave(g1, filename=file.path(dir_plots, "figure_map_country_type_profits.png"), 
-       width=6.5, height=5, units="in", dpi=600)
+       width=6.5, height=6.5, units="in", dpi=600)
 
 # Plot
 g2 <- ggplot() +
@@ -442,7 +463,7 @@ g2
 
 # Export figure
 ggsave(g2, filename=file.path(dir_plots, "figure_map_country_type_food.png"), 
-       width=6.5, height=5, units="in", dpi=600)
+       width=6.5, height=6.5, units="in", dpi=600)
 
 
 
