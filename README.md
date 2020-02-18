@@ -9,3 +9,9 @@ This paper is based on the following "blue paper" commissioned by the [High Leve
 * Gaines SD, Cabral RB, Free CM, Golbuu Y, et al. (2019) The expected impacts of climate change on the ocean economy. World Resources Institute. Available online [here](https://www.oceanpanel.org/expected-impacts-climate-change-ocean-economy).
 
 This README page will be updated to describe the repository contents shortly. Thank you for your patience.
+
+This repository uses data generated from other papers and repositories:
+
+1. Fisheries analysis: https://github.com/SFG-UCSB/cc_trade
+2. Mariculture analysis: https://github.com/cfree14/aquacast
+3. Tourism analysis: contact Jim Palardy (Pew) or Ren Cabral (UCSB)
